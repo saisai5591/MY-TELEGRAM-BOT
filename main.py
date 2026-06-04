@@ -118,9 +118,9 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 if __name__ == '__main__':
     app = ApplicationBuilder().token(TOKEN).build()
-    app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("play", play))
     app.add_handler(CommandHandler("end", end))
     app.add_handler(CommandHandler("next", next_puzzle))
     app.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), handle_message))
-    app.run_polling(drop_pending_updates=True)
+    print("Bot 啟動完畢")
+    app.run_polling()
