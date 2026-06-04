@@ -70,9 +70,9 @@ MAX_ATTEMPTS = 25
 
 # 啟動遊戲嘅輔助函數
 async def start_game(update, context, puzzle):
-    context.user_data['current_game'] = puzzle
-    context.user_data['attempts'] = MAX_ATTEMPTS
-    context.user_data['found_keys'] = set()
+    context.chat_data['current_game'] = puzzle
+    context.chat_data['attempts'] = MAX_ATTEMPTS
+    context.chat_data['found_keys'] = set()
     await update.message.reply_text(
         f"【恐怖海龜湯】：\n{puzzle['story']}\n\n"
         f"你有 {MAX_ATTEMPTS} 次提問機會！\n"
@@ -89,21 +89,21 @@ async def next_puzzle(update, context):
     await start_game(update, context, game)
 
 async def reveal(update, context):
-    game = context.user_data.get('current_game')
+    game = context.chat_data.get('current_game')
     if not game:
         await update.message.reply_text("無遊戲進行緊，請用 /play 開始。")
         return
     await update.message.reply_text(f"【答案揭曉】：\n{game['answer']}")
-    context.user_data['current_game'] = None
+    context.chat_data['current_game'] = None
 
 async def check_question(update, context):
-    game = context.user_data.get('current_game')
+    game = context.chat_data.get('current_game')
     if not game:
         await update.message.reply_text("請先輸入 /play 開始遊戲。")
         return
     
     # 檢查次數
-    context.user_data['attempts'] -= 1
+    context.chat_data['attempts'] -= 1
     remaining = context.user_data['attempts']
     
     if remaining < 0:
@@ -117,7 +117,7 @@ async def check_question(update, context):
     for keyword, response in game['keywords'].items():
         if keyword in user_text:
             found_key = keyword
-            context.user_data['found_keys'].add(keyword)
+            context.chat_data['found_keys'].add(keyword)
             await update.message.reply_text(f"{response} (剩餘: {remaining})")
             break 
     
