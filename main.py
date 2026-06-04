@@ -1,5 +1,16 @@
 import random
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters
+import threading
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Bot is running!"
+
+def run_web():
+    app.run(host='0.0.0.0', port=10000)
 
 # 1. 恐怖題庫 (含長篇故事、長篇答案、關鍵字)
 puzzles = [
@@ -117,7 +128,13 @@ async def check_question(update, context):
          await update.message.reply_text("你已經掌握大部分真相，仲差 1-2 個關鍵細節！")
     elif not found_key:
         await update.message.reply_text(f"不相關。(剩餘: {remaining})")
-
+if __name__ == '__main__':
+    # 新增：開一個背景 Web Server
+    threading.Thread(target=run_web).start()
+    
+    # 原本嗰段 bot 啟動碼
+    TOKEN = '8806982911:AAGtDR-qiyKRJlSl8mghC484UcR3qzub55M'  # 記得填返你個 Token
+    # ... (下面照舊)
 if __name__ == '__main__':
     # 【注意】一定要填入你個 Token
     TOKEN = '8806982911:AAGtDR-qiyKRJlSl8mghC484UcR3qzub55M' 
