@@ -120,7 +120,7 @@ async def check_question(update, context):
 
 if __name__ == '__main__':
     # 【注意】一定要填入你個 Token
-    TOKEN = '貼入去呢度' 
+    TOKEN = '8806982911:AAGtDR-qiyKRJlSl8mghC484UcR3qzub55M' 
     
     app = ApplicationBuilder().token(TOKEN).build()
     app.add_handler(CommandHandler('play', play))
