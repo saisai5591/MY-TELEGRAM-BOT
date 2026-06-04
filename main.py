@@ -8,8 +8,12 @@ from openai import OpenAI
 # 1. 配置區 - 請確保你的環境變數已設置 TOKEN 和 GROQ_API_KEY
 # 如果你係直接喺 Code 填 Key，就將 os.getenv(...) 換成 '你的Key'
 import os
-TOKEN = os.getenv('8806982911:AAGtDR-qiyKRJlSl8mghC484UcR3qzub55M')
-GROQ_API_KEY = os.getenv('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')
+import os
+
+# 唔好寫死個 Key，改做讀取你喺 Render 設定嘅變數
+TOKEN = os.getenv('TOKEN')
+GROQ_API_KEY = os.getenv('OPENAI_API_KEY') # 留意返，呢度改咗做 OPENAI_API_KEY 配合 openai 套件
+
 
 client = OpenAI(api_key=GROQ_API_KEY, base_url="https://api.groq.com/openai/v1")
 
