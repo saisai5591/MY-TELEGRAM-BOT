@@ -54,7 +54,7 @@ GROQ_API_KEY = os.getenv('OPENAI_API_KEY') # 留意返，呢度改咗做 OPENAI_
 
 client = OpenAI(api_key=GROQ_API_KEY, base_url="https://api.groq.com/openai/v1")
 
-# 2 故事 
+# 3 故事 
 puzzles = [
     {
         "story": "深夜，一間豪華公寓入面，男主人倒喺血泊中，屋入面嘅四部時鐘分別指住唔同時間。報警嘅女人聲淚俱下，話自己啱啱返屋企。警察到場後，女人卻被即時逮捕，唔係因為佢殺咗人，而係佢犯咗另外一個更離譜嘅罪。點解？",
@@ -79,7 +79,21 @@ puzzles = [
 ]
 
 
+# 4. 遊戲邏輯函數 (補返 end 同 next)
+async def play(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    context.chat_data.update({'game': random.choice([{"story":"...","answer":"..."}]), 'attempts': 20})
+    await update.message.reply_text("遊戲開始！請提問。")
 
+async def end(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("遊戲已結束。")
+    context.chat_data.clear()
+
+async def next_puzzle(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await play(update, context)
+
+async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    # 簡單回應處理
+    await update.message.reply_text("收到訊息。")
 # 3. 核心遊戲控制邏輯
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("歡迎來到海龜湯！輸入 /play 開始遊戲。")
